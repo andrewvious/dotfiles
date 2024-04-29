@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -12,22 +12,25 @@
     efi.canTouchEfiVariables = true;
   };
 
-  boot.initrd.luks.devices."luks-db29127c-e05e-4a4e-8558-2df438c6c766".device = "/dev/disk/by-uuid/db29127c-e05e-4a4e-8558-2df438c6c766";
+  boot.initrd.luks.devices."luks-04f2d713-cd4e-4d6e-bb67-024a40dd176a".device = "/dev/disk/by-uuid/04f2d713-cd4e-4d6e-bb67-024a40dd176a";
 
   # video capture from external device
+  # in case you feel like using OBS to stream
   boot.kernelModules = [ "v4l2loopback" ];
   boot.extraModulePackages = [ pkgs.linuxPackages.v4l2loopback ];
 
-  # Enable networking
-  networking.networkmanager.enable = true;
   networking.hostName = "dev-one"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+  # Enable networking
+  networking.networkmanager.enable = true;
+
   # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  time.timeZone = "America/Chicago";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -45,25 +48,9 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    videoDrivers = [ "amdgpu" "radeon" ];
-
-    # Enable the GNOME Desktop Environment.
-    displayManager = {
-      gdm.enable = true;
-      # Enable automatic login for the user.
-      autoLogin.enable = true;
-      autoLogin.user = "eureka";
-    };
-    desktopManager.gnome.enable = true;
-
-    # Configure keymap in X11
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-  };
+  services.xserver.enable = true;
+  # Loads the drivers for AMD GPUs on boot
+  services.xserver.videoDrivers = [ "amdgpu" "radeon" ];
   boot.initrd.kernelModules = [ "amdgpu" "radeon" ];
   hardware.opengl = {
     enable = true;
@@ -74,10 +61,23 @@
     ];
   };
   
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  # Tells electron apps like Discord to use Wayland
+  # by default
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  # Enable power management.
-  services.auto-cpufreq.enable = true;
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -93,33 +93,39 @@
   };
 
   # Enabling due to issues with Wayland & screen sharing
-  xdg.portal.enable = true;
+  xdg = {
+    portal = {
+      enable = true;
+    };
+  };
+
+  # Power manager, saves a ton of battery life
+  services.auto-cpufreq.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.eureka = {
+  users.users.andrewvious = {
     isNormalUser = true;
-    description = "Chris O'Brien";
+    description = "Andrew O'Brien";
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
   };
 
   # zsh & oh-my-zsh configurations
+  # *you want these*
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestions.enable = true;
-    shellAliases = {
-      # Use the Sway Developer Fuel Flake
-      swaydev = "nix develop github:fuellabs/fuel.nix#sway-dev -c zsh";
-      # Adds `.cargo/bin` to PATH ENV VAR
-      pcargo = "PATH=$PATH:/home/chrisobrien/.cargo/bin";
-    };
   };
   programs.zsh.ohMyZsh = {
     enable = true;
     plugins = [ "git" ];
     theme = "dst";
   };
+
+  # Enable automatic login for the user.
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "andrewvious";
 
   # Workaround for GNOME autologin
   systemd.services."getty@tty1".enable = false;
@@ -132,26 +138,19 @@
   nix = {
     settings = {
       experimental-features = ["nix-command" "flakes"];
-      extra-substituters = ["https://fuellabs.cachix.org"];
-      extra-trusted-public-keys = [
-        "fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
-      ];
     };
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment = {
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-    };
-
+  environment = {   
     gnome.excludePackages = with pkgs; [
       gnome.cheese
       gnome.gnome-music
       gnome-tour
       epiphany
       gnome.geary
+      gedit
       gnome-text-editor
       gnome.gnome-contacts
       gnome.yelp
@@ -197,6 +196,8 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
 
+  # Gets rid of all the built up NixOS builds
+  # from doing `sudo nixos-rebuild` over time.
   nix.gc = {
     automatic = true;
     dates = "weekly";

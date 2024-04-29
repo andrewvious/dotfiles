@@ -26,7 +26,7 @@
               useUserPackages = true;
               useGlobalPkgs = true;
               extraSpecialArgs = { inherit inputs; };
-              users.eureka = ./home-manager/home.nix;
+              users.andrewvious = ./home-manager/home.nix;
             };
           }
         ];

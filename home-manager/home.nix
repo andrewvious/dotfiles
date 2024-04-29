@@ -1,8 +1,8 @@
 { pkgs, inputs, ... }:
 
 {
-  home.username = "eureka";
-  home.homeDirectory = "/home/eureka";
+  home.username = "andrewvious";
+  home.homeDirectory = "/home/andrewvious";
 
   home.packages = with pkgs; [
     home-manager
@@ -17,7 +17,7 @@
     telegram-desktop
     # code
     git
-    helix
+    # helix
     (vscode-with-extensions.override {
       vscodeExtensions = with vscode-extensions; [
         bbenoist.nix # nix syntax highlighting
@@ -33,10 +33,10 @@
         zhuangtongfa.material-theme
         file-icons.file-icons
         eamodio.gitlens # git lens
+        ms-python.python
       ];
     })
-    nil
-    rust-analyzer
+    # nil # nix lsp for Helix
     # studio
     obs-studio
     ffmpeg # video formatter
@@ -115,8 +115,8 @@
 
   programs.git = {
     enable = true;
-    userName = "eureka-cpu";
-    userEmail = "github.eureka@gmail.com";
+    userName = "andrewvious";
+    userEmail = "ohbandrew@gmail.com";
   };
 
   gtk = {
