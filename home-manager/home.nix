@@ -16,6 +16,7 @@
     # comms
     telegram-desktop
     # code
+    docker
     git
     # helix
     (vscode-with-extensions.override {
