@@ -52,14 +52,6 @@
   # Loads the drivers for AMD GPUs on boot
   services.xserver.videoDrivers = [ "amdgpu" "radeon" ];
   boot.initrd.kernelModules = [ "amdgpu" "radeon" ];
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    extraPackages = with pkgs; [
-      rocm-opencl-icd
-      rocm-opencl-runtime
-    ];
-  };
   
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -80,7 +72,6 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -100,7 +91,7 @@
   };
 
   # Power manager, saves a ton of battery life
-  services.auto-cpufreq.enable = true;
+  # services.auto-cpufreq.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.andrewvious = {
@@ -121,6 +112,16 @@
     enable = true;
     plugins = [ "git" ];
     theme = "dst";
+  };
+
+  # docker configurations
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless = {
+  enable = true;
+  setSocketVariable = true;
+  };
+  virtualisation.docker.daemon.settings = {
+  data-root = "/etc/docker";
   };
 
   # Enable automatic login for the user.
