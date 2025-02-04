@@ -12,6 +12,8 @@
     efi.canTouchEfiVariables = true;
   };
 
+  hardware.enableAllFirmware = true;
+
   boot.initrd.luks.devices."luks-04f2d713-cd4e-4d6e-bb67-024a40dd176a".device = "/dev/disk/by-uuid/04f2d713-cd4e-4d6e-bb67-024a40dd176a";
 
   # video capture from external device
