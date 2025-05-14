@@ -148,15 +148,15 @@
   # $ nix search wget
   environment = {   
     gnome.excludePackages = with pkgs; [
-      gnome.cheese
-      gnome.gnome-music
+      cheese
+      gnome-music
       gnome-tour
       epiphany
-      gnome.geary
+      geary
       gedit
       gnome-text-editor
-      gnome.gnome-contacts
-      gnome.yelp
+      gnome-contacts
+      yelp
     ];
   };
 
@@ -168,7 +168,8 @@
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+      pkgs.nerd-fonts._0xproto
+      pkgs.nerd-fonts.droid-sans-mono
     ];
   };
 
@@ -201,9 +202,12 @@
 
   # Gets rid of all the built up NixOS builds
   # from doing `sudo nixos-rebuild` over time.
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
+  nix = {
+    package = pkgs.nixVersions.latest;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
   };
 }
