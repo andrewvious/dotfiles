@@ -1,9 +1,9 @@
 { config, pkgs, ... }:
-
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./nordvpn.nix
     ];
 
   # Bootloader.
@@ -99,7 +99,7 @@
   users.users.andrewvious = {
     isNormalUser = true;
     description = "Andrew O'Brien";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "nordvpn" ];
     shell = pkgs.zsh;
   };
 
@@ -168,8 +168,8 @@
 
   fonts = {
     packages = with pkgs; [
-      pkgs.nerd-fonts._0xproto
-      pkgs.nerd-fonts.droid-sans-mono
+      nerd-fonts._0xproto
+      nerd-fonts.droid-sans-mono
     ];
   };
 
@@ -186,11 +186,11 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  # nordvpn settings:
+  services.nordvpn.enable = true;
+  networking.firewall.allowedTCPPorts = [ 443 ];
+  networking.firewall.allowedUDPPorts = [ 1194 ];
+  networking.firewall.checkReversePath = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
