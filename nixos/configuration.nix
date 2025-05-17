@@ -138,10 +138,12 @@
   nixpkgs.config.allowUnfree = true;
 
   # Experimental features
-  nix = {
-    settings = {
-      experimental-features = ["nix-command" "flakes"];
-    };
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    extra-substituters = [ "https://cloud-scythe-labs.cachix.org" ];
+    extra-trusted-public-keys = [
+      "cloud-scythe-labs.cachix.org-1:I+IM+x2gGlmNjUMZOsyHJpxIzmAi7XhZNmTVijGjsLw="
+    ];
   };
 
   # List packages installed in system profile. To search, run:
