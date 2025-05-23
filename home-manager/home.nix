@@ -58,6 +58,7 @@
     steam
     libreoffice
     kitty-themes
+    vlc
   ] ++ [ (pkgs.callPackage ./tiup.nix {}) ];
   
   programs.kitty = {
@@ -101,24 +102,29 @@
   };
 
   # zsh & oh-my-zsh configurations
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    enableAutosuggestions = true;
-    shellAliases = {
-      swaydev = "nix develop github:fuellabs/fuel.nix#sway-dev -c zsh";
+  programs = {
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      enableAutosuggestions = true;
+      shellAliases = {
+        swaydev = "nix develop github:fuellabs/fuel.nix#sway-dev -c zsh";
+      };
+      oh-my-zsh = {
+        enable = true;
+        plugins = [ "git" ];
+        theme = "dst";
+      };
     };
-  };
-  programs.zsh.oh-my-zsh = {
-    enable = true;
-    plugins = [ "git" ];
-    theme = "dst";
-  };
 
-  programs.git = {
-    enable = true;
-    userName = "andrewvious";
-    userEmail = "ohbandrew@gmail.com";
+    git = {
+      enable = true;
+      userName = "andrewvious";
+      userEmail = "ohbandrew@gmail.com";
+    };
+
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
   };
 
   gtk = {
@@ -181,9 +187,6 @@
       screensaver = []; # turn off lock screen
     };
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
