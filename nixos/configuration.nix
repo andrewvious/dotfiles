@@ -74,7 +74,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -127,8 +127,8 @@
   };
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "andrewvious";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "andrewvious";
 
   # Workaround for GNOME autologin
   systemd.services."getty@tty1".enable = false;

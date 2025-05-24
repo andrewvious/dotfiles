@@ -38,7 +38,7 @@
         ms-python.python
       ];
     })
-    # nil # nix lsp for Helix
+    nil # nix lsp for Helix
     # studio
     obs-studio
     ffmpeg # video formatter
@@ -48,6 +48,7 @@
     # linuxKernel.packages.linux_5_15.vrl2loopbacko
     gnomeExtensions.color-picker
     gnomeExtensions.pop-shell
+    gnomeExtensions.system-monitor
     gnomeExtensions.user-themes
     tlp
     auto-cpufreq
@@ -106,7 +107,9 @@
     zsh = {
       enable = true;
       enableCompletion = true;
-      enableAutosuggestions = true;
+      autosuggestion = {
+        enable = true;
+      };
       shellAliases = {
         swaydev = "nix develop github:fuellabs/fuel.nix#sway-dev -c zsh";
       };
@@ -197,5 +200,4 @@
   # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
 }
-
 
