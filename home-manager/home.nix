@@ -159,6 +159,7 @@
       enabled-extensions = [
         "pop-shell@system76.com"
         "user-theme@gnome-shell-extensions.gcampax.github.com"
+        "system-monitor@gnome-shell-extensions.gcampax.github.com"
       ];
     };
     "org/gnome/shell/extensions/user-theme" = {
