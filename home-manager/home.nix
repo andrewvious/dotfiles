@@ -6,6 +6,7 @@
 
   home.packages = with pkgs; [
     home-manager
+    obsidian
     wl-clipboard
     brave
     kitty
