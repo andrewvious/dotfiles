@@ -58,6 +58,7 @@
     xdg-desktop-portal-gnome
     blender
     steam
+    melonDS
     libreoffice
     kitty-themes
     vlc
