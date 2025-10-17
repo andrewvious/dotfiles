@@ -3,7 +3,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nordvpn.nix
+      # ./nordvpn.nix
     ];
 
   # Bootloader.
@@ -99,7 +99,7 @@
   users.users.andrewvious = {
     isNormalUser = true;
     description = "Andrew O'Brien";
-    extraGroups = [ "networkmanager" "wheel" "nordvpn" ];
+    extraGroups = [ "networkmanager" "wheel" ]; # add nordvpn back...
     shell = pkgs.zsh;
   };
 
@@ -189,10 +189,10 @@
   # services.openssh.enable = true;
 
   # nordvpn settings:
-  services.nordvpn.enable = true;
-  networking.firewall.allowedTCPPorts = [ 443 ];
-  networking.firewall.allowedUDPPorts = [ 1194 ];
-  networking.firewall.checkReversePath = false;
+  # services.nordvpn.enable = true;
+  # networking.firewall.allowedTCPPorts = [ 443 ];
+  # networking.firewall.allowedUDPPorts = [ 1194 ];
+  # networking.firewall.checkReversePath = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
